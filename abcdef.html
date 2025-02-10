@@ -1,0 +1,137 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7fbca;
+            margin: 0;
+            font-family: Brush Script MT (cursive);
+            position: relative;
+            color: #333;
+        }
+
+        .popup-message {
+            position: absolute;
+            font-size: 50px;
+            font-weight: bold;
+            color: #8a3858; 
+            text-align: center;
+            transform: scale(0);
+            opacity: 0;
+            animation: pop 4s ease-out forwards;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .heart, .kiss, .cat-kiss {
+            position: absolute;
+            font-size: 30px;
+            animation: float 1s ease-in-out infinite;
+            color: #ff69b4;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+            50% {
+                transform: translateY(-20px) rotate(45deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+        }
+
+        .heart:nth-child(odd), .kiss:nth-child(odd), .cat-kiss:nth-child(odd) {
+            animation-duration: 3s;
+        }
+
+        .heart:nth-child(even), .kiss:nth-child(even), .cat-kiss:nth-child(even) {
+            animation-duration: 3.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="popup-message" id="popupMessage">
+        <b><i>ERROR 404:<br>You not found!<br>Update needed-<br>When are we meeting, my sugarplum? <br><strong>?????</strong></i></b>
+    </div>
+
+    <script>
+        // Function to generate random hearts, kisses, and cat kisses around the message
+        function createEmojis() {
+            const emojiContainer = document.querySelector("body");
+            const emojiCount = 40; // Number of emojis to display
+
+            for (let i = 0; i < emojiCount; i++) {
+                const randomEmoji = Math.floor(Math.random() * 3); // Randomly pick an emoji type (0=heart, 1=kiss, 2=cat kiss)
+                const emoji = document.createElement("div");
+
+                // Set the emoji content
+                if (randomEmoji === 0) {
+                    emoji.classList.add("heart");
+                    emoji.textContent = "❤️"; // Heart emoji
+                } else if (randomEmoji === 1) {
+                    emoji.classList.add("kiss");
+                    emoji.textContent = "💋"; // Kiss emoji
+                } else {
+                    emoji.classList.add("cat-kiss");
+                    emoji.textContent = "💙"; // Cat kiss emoji
+                }
+
+                // Randomize position and animation delay
+                const xPos = Math.random() * window.innerWidth;
+                const yPos = Math.random() * window.innerHeight;
+
+                emoji.style.left = `${xPos}px`;
+                emoji.style.top = `${yPos}px`;
+                emoji.style.animationDelay = `${Math.random() * 2}s`;
+
+                emojiContainer.appendChild(emoji);
+            }
+        }
+
+        // Function to restart the animation for the popup message
+        function restartPopupAnimation() {
+            const message = document.getElementById("popupMessage");
+            
+            // Reset the animation by removing and re-adding the class
+            message.classList.remove('popup-message');
+            message.offsetHeight; // Trigger reflow
+            message.classList.add('popup-message');
+        }
+
+        // Show the message and emojis after a short delay, and restart popup animation every 3 seconds
+        window.onload = () => {
+            createEmojis(); // Add hearts, kisses, and cat kisses around the message
+
+            // Pop the message up every 3 seconds
+            setInterval(() => {
+                restartPopupAnimation();
+            }, 3000);
+        };
+    </script>
+
+</body>
+</html>
+
+
